@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="libraries :: csses"></div>
+    <title>Katalog</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" >
+</head>
+
+<body>
+    <div th:replace="libraries :: navbar"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-1">ąćęłńśóźż</div>
+            <div class="col-lg-10">
+                <table id="booksTable" class="table table-striped table-borderless" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="th-sm">Imie
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                        <th class="th-sm">Nazwisko
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.firstName}">koooooook</td>
+                        <td th:text="${user.lastName}">bob</td>
+                    </tr>
+
+                    </tbody>
+                    <!--<tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                    </tr>
+                    </tfoot>-->
+                </table>
+
+                <div th:include="libraries :: scripts"></div>
+
+                <script>
+                    $(document).ready(function () {
+                        $('#booksTable').DataTable({"language": {"search": "KURRRLAApply filter _INPUT_ to table", "sSearch": "SzukKKKKKKKKXDDDDaj:"}});
+                        $('.dataTables_length').addClass('bs-select');
+                    });
+                </script>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+    </div>
+</body>
+</html>
