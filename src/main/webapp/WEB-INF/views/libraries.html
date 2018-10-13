@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://thymleaf.org">
+<div th:fragment="csses">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Font Awesome -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <!-- Bootstrap core CSS -->
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../resources/css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="../resources/css/style.css" rel="stylesheet">
+
+    <!-- MDBootstrap Datatables  -->
+    <link href="../resources/css/addons/datatables.min.css" rel="stylesheet">
+
+</div>
+<body>
+<!--Main Navigation-->
+<header th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark default-color">
+        <a class="navbar-brand" href="/"><strong>NaukaJazdy</strong></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li id="navbar-index" class="nav-item">
+                    <a class="nav-link" href="/">Strona główna</a>
+                </li>
+                <li id="navbar-inna" class="nav-item">
+                    <a class="nav-link" href="/inna strona">inna strona</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<!--Main Navigation-->
+
+<div th:fragment="scripts">
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../resources/js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="../resources/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="../resources/js/mdb.min.js"></script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="../resources/js/addons/datatables.js"></script>
+
+    <script>
+        function navbarCurrent() {
+            console.log("document.title=" + document.title);
+            if (document.title === 'Strona') {
+                $('#navbar-index').addClass('active');
+            } else if (document.title === 'tu tytul innej strony') {
+                $('#navbar-tu id z navabra').addClass('active');
+            }
+        }
+
+        $('document').ready(navbarCurrent());
+    </script>
+</div>
+
+</body>
+</html>
