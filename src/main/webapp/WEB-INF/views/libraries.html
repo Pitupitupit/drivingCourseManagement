@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://thymleaf.org">
+        xmlns:th="http://thymleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <div th:fragment="csses">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <!-- Font Awesome -->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
     <!-- Bootstrap core CSS -->
-    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
     <!-- Material Design Bootstrap -->
-    <link href="../resources/css/mdb.min.css" rel="stylesheet">
+    <link th:href="@{/resources/css/mdb.min.css}" rel="stylesheet">
     <!-- Your custom styles (optional) -->
-    <link href="../resources/css/style.css" rel="stylesheet">
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet">
 
     <!-- MDBootstrap Datatables  -->
-    <link href="../resources/css/addons/datatables.min.css" rel="stylesheet">
+    <link th:href="@{/resources/css/addons/datatables.min.css}" rel="stylesheet">
 
 </div>
-<body>
+<body class="bg-light">
+
 <!--Main Navigation-->
 <header th:fragment="navbar">
+
     <nav class="navbar navbar-expand-lg navbar-dark default-color">
-        <a class="navbar-brand" href="/"><strong>NaukaJazdy</strong></a>
+        <i class="fas fa-car-side fa-2x mr-3 white-text"></i><a class="navbar-brand" href="/"><strong>Nauka Jazdy!</strong></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -30,10 +34,43 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li id="navbar-index" class="nav-item">
-                    <a class="nav-link" href="/">Strona główna</a>
+                   <a class="nav-link" href="/"><i class="fas fa-home fa-lg mr-2"></i>Strona główna</a>
                 </li>
-                <li id="navbar-inna" class="nav-item">
-                    <a class="nav-link" href="/inna strona">inna strona</a>
+                <li id="navbar-instructorPanel" class="nav-item" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                    <a class="nav-link" href="/instructor"><i class="fas fa-users fa-lg mr-2"></i>Kursanci</a>
+                </li>
+                <li id="navbar-addDrive" class="nav-item" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                    <a class="nav-link" href="/dodajJazde"><i class="fas fa-calendar-plus fa-lg mr-2"></i>Dodaj jazdę</a>
+                </li>
+                <li id="navbar-DrivesPlan" class="nav-item" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                    <a class="nav-link" href="/instructor/plan"><i class="fas fa-list fa-lg mr-2"></i>Plan jazd</a>
+                </li>
+                <li id="navbar-clientPanel" class="nav-item" sec:authorize="hasRole('ROLE_CLIENT')">
+                    <a class="nav-link" href="/student"><i class="fas fa-clipboard-list fa-lg mr-2"></i>Panel kursanta</a>
+                </li>
+                <li id="navbar-login" class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt fa-lg mr-2"></i>Zaloguj</a>
+                </li>
+                <li id="navbar-profile" class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/profile"><i class="fas fa-address-card fa-lg mr-2"></i>Profil</a>
+                </li>
+                <li id="navbar-managementPanel" class="nav-item dropdown" sec:authorize="hasRole('ROLE_MANAGER')">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false"><i class="fas fa-clipboard-list fa-lg mr-2"></i>Zarządzaj</a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/management/">Panel kierownika</a>
+                        <a class="dropdown-item" href="/management/register/client">Nowy klient</a>
+                        <a class="dropdown-item" href="/management/register/instructor">Nowy instruktor</a>
+                    </div>
+                </li>
+                <li id="navbar-groupSMS" class="nav-item" sec:authorize="hasRole('ROLE_MANAGER')">
+                    <a class="nav-link" href="/groupSMS"><i class="fas fa-sms fa-lg mr-2"></i>SMS grupowy</a>
+                </li>
+                <li id="navbar-logout" class="nav-item" sec:authorize="isAuthenticated()">
+                    <form id="form-logout" th:action="@{/logout}" method="post">
+                        <a class="nav-link" onclick="$('#form-logout').submit();"><i class="fas fa-sign-out-alt fa-lg mr-2"></i>Wyloguj</a>
+                    </form>
+
                 </li>
             </ul>
         </div>
@@ -44,27 +81,44 @@
 <div th:fragment="scripts">
     <!-- SCRIPTS -->
     <!-- JQuery -->
-    <script type="text/javascript" src="../resources/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" th:src="@{/resources/js/jquery-3.3.1.min.js}"></script>
     <!-- Bootstrap tooltips -->
-    <script type="text/javascript" src="../resources/js/popper.min.js"></script>
+    <script type="text/javascript" th:src="@{/resources/js/popper.min.js}"></script>
     <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{/resources/js/bootstrap.min.js}"></script>
     <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="../resources/js/mdb.min.js"></script>
+    <script type="text/javascript" th:src="@{/resources/js/mdb.min.js}"></script>
     <!-- MDBootstrap Datatables  -->
-    <script type="text/javascript" src="../resources/js/addons/datatables.js"></script>
+    <script type="text/javascript" th:src="@{/resources/js/addons/datatables.js}"></script>
 
     <script>
-        function navbarCurrent() {
+        console.log("XD");
+        function navbarCurrentOptionMarked() {
             console.log("document.title=" + document.title);
-            if (document.title === 'Strona') {
+            if (document.title === 'Strona główna') {
                 $('#navbar-index').addClass('active');
-            } else if (document.title === 'tu tytul innej strony') {
-                $('#navbar-tu id z navabra').addClass('active');
+            } else if (document.title === 'Logowanie') {
+                $('#navbar-login').addClass('active');
+            } else if (document.title === 'Panel kierownika' || document.title === 'Nowy klient' || document.title === 'Nowy instruktor') {
+                $('#navbar-managementPanel').addClass('active');
+            } else if (document.title === 'Kursanci') {
+                $('#navbar-instructorPanel').addClass('active');
+            } else if (document.title === 'Panel kursanta') {
+                $('#navbar-clientPanel').addClass('active');
+            } else if (document.title === 'Twój profil') {
+                $('#navbar-profile').addClass('active');
+            } else if (document.title === 'Dodaj jazdę') {
+                $('#navbar-addDrive').addClass('active');
+            } else if (document.title === 'Plan jazd') {
+                $('#navbar-DrivesPlan').addClass('active');
+            } else if (document.title === 'SMS grupowy') {
+                $('#navbar-groupSMS').addClass('active');
             }
         }
 
-        $('document').ready(navbarCurrent());
+        $('document').ready(navbarCurrentOptionMarked());
+
+
     </script>
 </div>
 

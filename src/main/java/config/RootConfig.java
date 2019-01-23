@@ -12,6 +12,11 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -21,12 +26,13 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
-public class RootConfig {
+@EnableWebSecurity
+public class RootConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private Environment env;
 
-    @Bean
+    @Bean(name = "dataSource")
     public DataSource getDataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getRequiredProperty("datasource.driver"));
@@ -61,4 +67,31 @@ public class RootConfig {
         txManager.setSessionFactory(sessionFactory);
         return txManager;
     }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(getDataSource()).
+                authoritiesByUsernameQuery("select username, role from users where username=?").
+                passwordEncoder(new BCryptPasswordEncoder());
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        http.
+                formLogin().loginPage("/login").
+                and().
+                authorizeRequests().
+                antMatchers("/management").hasRole("MANAGER").
+                antMatchers("/management/register/client").hasRole("MANAGER").
+                antMatchers("/management/register/instructor").hasRole("MANAGER").
+                antMatchers("/instructor").hasRole("INSTRUCTOR").
+                antMatchers("/student").hasRole("CLIENT").
+                antMatchers("/profile").authenticated().
+                anyRequest().permitAll().and().
+                logout().
+                logoutUrl("/logout").
+                logoutSuccessUrl("/");
+    }
+
+
 }

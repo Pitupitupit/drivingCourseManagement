@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="libraries :: csses"></div>
+    <title th:text="${user.username}"></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+<body class="bg-light">
+<div th:replace="libraries :: navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5">
+            <div class="card border-default mt-5">
+                <h5 th:if="${user.role=='ROLE_CLIENT'}" class="card-header h5 bg-default text-white">Kursant</h5>
+                <h5 th:if="${user.role=='ROLE_INSTRUCTOR'}" class="card-header h5 bg-default text-white">Instruktor</h5>
+                <h5 th:if="${user.role=='ROLE_MANAGER'}" class="card-header h5 bg-default text-white">Kierownik</h5>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label class="d-inline">Łączny czas jazd - </label>
+                        <b><h5 th:if="${user.role=='ROLE_CLIENT'}" class="card-title d-inline" th:text="${hoursClient+'h '+minutesClient+'min'}" id="timeClient"></h5></b>
+                        <b><h5 th:if="${user.role=='ROLE_INSTRUCTOR'}" class="card-title d-inline" th:text="${hoursInstructor+'h '+minutesInstructor+'min'}"></h5></b>
+                    </div>
+                    <!--<b><h5 th:if="${user.role=='ROLE_CLIENT'}"  th:text="${'Łączny czas nauki - '+hoursClient+'h i '+minutesClient+'min'}" class="card-title"></h5></b>
+                    <b><h5 th:if="${user.role=='ROLE_INSTRUCTOR'}" th:text="${'Łączny czas jazd - '+hoursInstructor+'h i '+minutesInstructor+'min'}" class="card-title"></h5></b>-->
+                    <div class="mb-4">
+                    <label class="d-inline" for="username">Nazwa użytkownika:</label>
+                        <b><h5 class="card-title d-inline" th:text="${user.getUsername()}" id="username"></h5></b>
+                    </div>
+                    <div class="mb-4">
+                    <label class="d-inline" for="firstname">Imię:</label>
+                        <b><h5 class="card-title d-inline" th:text="${user.getFirstname()}" id="firstname"></h5></b>
+                    </div>
+                    <div class="mb-4">
+                    <label class="d-inline" for="lastname">Nazwisko:</label>
+                        <b><h5 class="card-title d-inline" th:text="${user.getLastname()}" id="lastname"></h5></b>
+                    </div>
+                    <div class="mb-4">
+                    <label class="d-inline" for="telephone">Numer telefonu:</label>
+                        <b><h5 class="card-title d-inline" th:text="${user.getTelephone()}" id="telephone" ></h5></b>
+                    </div>
+                    <div class="mb-4">
+                    <label class="d-inline" for="email">Email:</label>
+                        <b><h5 class="card-title d-inline" th:text="${user.getEmail()}" id="email"></h5></b>
+                    </div>
+
+                    <div th:if="${user.role=='ROLE_CLIENT'}">
+                        <div class="mb-4">
+                        <label class="d-inline" for="idinstructor">Instruktor:</label>
+                            <b><h5 class="card-title d-inline" id="idinstructor" th:text="${instructor.user.getFirstname()+' '+instructor.user.getLastname()+' (tel. '+instructor.user.getTelephone()+')' }"></h5></b>
+                        </div>
+                        <div>
+                        <label class="d-inline" for="category">Podjęty kurs w kategorii/kategoriach:</label>
+                            <b><h5 class="card-title d-inline" id="category" th:text="${client.category}"></h5></b>
+                        </div>
+                    </div>
+
+                    <div th:if="${user.role=='ROLE_INSTRUCTOR'}">
+                        <div>
+                        <label class="d-inline" for="categories">Prawa do nauki w kategorii/kategoriach:</label>
+                            <b><h5 class="card-title d-inline" id="categories" th:text="${instructorROLE.categories}"></h5></b>
+                        </div>
+
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_MANAGER')">
+                        <hr>
+                        <a th:href="@{'/profile/'+${user.username}+'/edytuj'}"><button class="btn btn-danger mt-3">Zmień dane</button></a>
+                    </div>
+
+                </div>
+            </div><!--kard 1 -->
+            <!--kard 2 --><div class="card border-default mt-3 mb-3" th:if="${user.role=='ROLE_INSTRUCTOR'}">
+                <h5 class="card-header h5 bg-default text-white">Kursanci instruktora</h5>
+                <div class="card-body">
+                    <p class="card-title">Lista zawiera wszystkich kursantów przypisanych do instruktora.</p>
+                    <hr>
+                    <table id="clientsTable" class="table table-striped table-borderless" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="th-sm">Imię nazwisko (link)
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Telefon
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Kurs
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="client : ${clientsOfInstructor}">
+                            <td><b><a th:href="${'../profile/'+client.user.username}" th:text="${client.user.firstname+' '+client.user.lastname}"></a></b></td>
+                            <td th:text="${client.user.telephone}"></td>
+                            <td th:text="${client.category}"></td>
+                        </tr>
+
+                        </tbody>
+                        <!--<tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                        </tr>
+                        </tfoot>-->
+                    </table>
+                </div>
+            </div>
+
+
+
+
+
+
+
+        </div>
+        <div th:if="${user.role=='ROLE_INSTRUCTOR'}" class="col-lg-5">
+        <div class="card border-default mt-5">
+            <h5 class="card-header h5 bg-default text-white">Plan jazd</h5>
+            <div class="card-body">
+                <p class="card-title">Plan zawiera historię jazd (kolor czerwony) oraz przyszłe jazdy (zielony). Imię, nazwisko i nr tel. kursanta to link do profilu.</p>
+                <hr>
+                <table id="planIns" class="table table-striped table-borderless" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="th-sm">Data
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                        <th class="th-sm">Godziny
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                        <th class="th-sm">Czas trwania
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                        <th class="th-sm">Kursant
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                        <th class="th-sm">Kurs
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <!--<tr th:style="${drive.done} ? 'background-color: #ff6666' : 'background-color: #80ff80'" th:each="drive : ${drives}">-->
+                    <tr th:class="${drive.done} ? 'red-text' : 'green-text'"  th:each="drive : ${drives}">
+                        <!--<td><b><a th:href="${'../profile/'+client.user.username}" th:text="${client.user.firstname+' '+client.user.lastname}"></a></b></td>-->
+                        <td th:text="${drive.date}"></td>
+                        <td th:text="${drive.start+' - '+drive.stop}"></td>
+                        <td th:text="${drive.duration}"></td>
+                        <td><b><a th:href="${'../profile/'+drive.client.user.username}" th:text="${drive.client.user.firstname+' '+drive.client.user.lastname+' tel.: '+drive.client.user.telephone}"></a></b></td>
+                        <td th:text="${drive.client.category}"></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+
+
+        <div th:if="${user.role=='ROLE_CLIENT'}" class="col-lg-5">
+            <div class="card border-default mt-5">
+                <h5 class="card-header h5 bg-default text-white">Plan jazd</h5>
+                <div class="card-body">
+                    <p class="card-title">Plan zawiera historię jazd (kolor czerwony) oraz przyszłe jazdy (zielony).</p>
+                    <hr>
+                    <table id="placCli" class="table table-striped table-borderless" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="th-sm">Data
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Godziny
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Czas trwania
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Instruktor
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Kurs
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:class="${drive.done} ? 'red-text' : 'green-text'" th:each="drive : ${drives}">
+                            <!--<td><b><a th:href="${'../profile/'+client.user.username}" th:text="${client.user.firstname+' '+client.user.lastname}"></a></b></td>-->
+                            <td th:text="${drive.date}"></td>
+                            <td th:text="${drive.start+' - '+drive.stop}"></td>
+                            <td th:text="${drive.duration}"></td>
+                            <td><b><a th:href="${'../profile/'+drive.instructor.user.username}" th:text="${drive.instructor.user.firstname+' '+drive.instructor.user.lastname}"></a></b></td>
+                            <td th:text="${drive.client.category}"></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+
+
+</div>
+<div th:include="libraries :: scripts"></div>
+</body>
+</html>
+
+

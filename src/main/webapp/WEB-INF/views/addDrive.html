@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="libraries :: csses"></div>
+    <title>Dodaj jazdę</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+<body class="bg-light">
+<div th:replace="libraries :: navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4">
+            <div class="card border-default mt-5">
+                <h5 class="card-header h5 bg-default text-white">Dodawanie jazdy</h5>
+                <div class="card-body">
+                    <p class="card-title">Aby dodać nową jazdę, uzupełnij poniższy formularz.</p>
+                    <hr>
+                    <form th:object="${drive}" action="/dodajJazde" method="post">
+                        <div class="form-group">
+                            <label for="date">Data</label>
+                            <input class="form-control" type="date" id="date" th:field="*{date}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="start">Godzina startu</label>
+                            <input class="form-control" type="time" id="start" th:field="*{startString}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="stop">Koniec o godzinie</label>
+                            <input class="form-control" type="time" id="stop" th:field="*{endString}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="instructor">Wybierz kursanta:</label>
+                            <select class="form-control browser-default custom-select" id="instructor" th:field="*{idclient}">
+                                <option th:each="c : ${clients}" th:value="${c.id}" th:text="${c.user.firstname+' '+c.user.lastname+' '+c.user.telephone}"></option>
+                            </select>
+                        </div>
+
+
+                        <input type="hidden"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}" />
+                        <div class="text-center"><button type="submit" class="btn btn-default btn-lg">Dodaj jazdę!</button></div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6"></div>
+    </div>
+</div>
+<div th:include="libraries :: scripts"></div>
+</body>
+</html>

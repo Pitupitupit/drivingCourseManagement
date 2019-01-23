@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="libraries :: csses"></div>
+    <title th:value="${user.username}"></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+<body class="bg-light">
+<div th:replace="libraries :: navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+
+            <div class="card border-default mt-5">
+                <h5 th:if="${user.role=='ROLE_CLIENT'}" class="card-header h5 bg-default text-white">Zmień dane kursanta</h5>
+                <h5 th:if="${user.role=='ROLE_INSTRUCTOR'}" class="card-header h5 bg-default text-white">Zmień dane instruktora</h5>
+                <h5 th:if="${user.role=='ROLE_MANAGER'}" class="card-header h5 bg-default text-white">Zmień dane kierownika</h5>
+                <div class="card-body">
+                    <p class="card-title">Jako kierownik masz możliwość edytowania danych klientów oraz instruktorów.</p>
+                    <hr>
+                    <form th:if="${user.role=='ROLE_CLIENT'}" th:object="${client}" th:action="@{'/profile/'+${user.username}+'/edytuj'}" method="post">
+
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="username">Nazwa użytkownika:</label>
+                                <input th:value="${client.user.username}" class="form-control" type="text" id="username" th:field="*{user.username}"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="telephone">Tel.:</label>
+                                <input th:value="${client.user.telephone}" class="form-control" type="text" id="telephone" th:field="*{user.telephone}"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="password">Nowe hasło (lub pozostaw puste pole by zachować hasło):</label>
+                                <input class="form-control" type="password" id="password" th:field="*{user.password}"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="email">Email:</label>
+                                <input th:value="${client.user.email}" class="form-control" type="email" id="email" th:field="*{user.email}"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="firstname">Imię:</label>
+                                <input th:value="${client.user.firstname}" class="form-control" type="text" id="firstname" th:field="*{user.firstname}"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="instructor" th:text="${'Instruktor: '+client.instructor.user.firstname+' '+client.instructor.user.lastname}"></label>
+                                <select class="form-control browser-default custom-select" id="instructor" th:field="*{idinstructor}">
+                                    <option th:each="i : ${instructors}" th:value="${i.id}" th:text="${i.user.firstname+' '+i.user.lastname}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="lastname">Nazwisko:</label>
+                                <input th:value="${client.user.lastname}" class="form-control" type="text" id="lastname" th:field="*{user.lastname}"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="category">Kurs:</label>
+                                <input class="form-control" type="text" id="category" th:value="${client.category}" th:field="*{category}"/>
+                            </div>
+                        </div>
+
+
+                        <input type="hidden"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}" />
+                        <div class="text-center"><button type="submit" class="btn btn-danger btn-lg">Potwierdź zmiany</button></div>
+                    </form>
+
+                    <form th:if="${user.role=='ROLE_INSTRUCTOR'}" th:object="${instructor}" th:action="@{'/profile/'+${user.username}+'/edytuj'}" method="post">
+
+
+
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="username2">Nazwa użytkownika:</label>
+                                <input th:value="${instructor.user.username}" class="form-control" type="text" id="username2" th:field="*{user.username}"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="telephone2">Tel.:</label>
+                                <input th:value="${instructor.user.telephone}" class="form-control" type="text" id="telephone2" th:field="*{user.telephone}"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="password2">Nowe hasło (lub pozostaw puste pole by zachować hasło):</label>
+                                <input class="form-control" type="password" id="password2" th:field="*{user.password}"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="email2">Email:</label>
+                                <input th:value="${instructor.user.email}" class="form-control" type="email" id="email2" th:field="*{user.email}"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="firstname2">Imię:</label>
+                                <input th:value="${instructor.user.firstname}" class="form-control" type="text" id="firstname2" th:field="*{user.firstname}"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="category2">Prawo nauki kategorii</label>
+                                <input class="form-control" type="text" id="category2" th:value="${instructor.categories}" th:field="*{categories}"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="lastname2">Nazwisko:</label>
+                                <input th:value="${instructor.user.lastname}" class="form-control" type="text" id="lastname2" th:field="*{user.lastname}"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+
+                            </div>
+                        </div>
+
+
+                        <input type="hidden"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}" />
+                        <div class="text-center"><button type="submit" class="btn btn-danger btn-lg">Potwierdź zmiany</button></div>
+
+                    </form>
+
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+</div>
+<div th:include="libraries :: scripts"></div>
+</body>
+</html>

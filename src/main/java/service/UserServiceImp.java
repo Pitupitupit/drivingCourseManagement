@@ -21,4 +21,26 @@ public class UserServiceImp implements UserService {
     public List<User> list() {
         return userDAO.list();
     }
+
+    public List<User> listByRole(String role) {
+        return userDAO.listByRole(role);
+    }
+
+    public User getUserById(long id) {
+        return userDAO.getUserById(id);
+    }
+
+    public User getUserByUsername(String username) {
+        return userDAO.getUserByUsername(username);
+    }
+
+    public void updateUser(User user) {
+        userDAO.updateUser(user);
+    }
+
+    public void setInactive(long id){
+        userDAO.setInactive(id);
+    }
+
+
 }

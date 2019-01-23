@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan jazd</title>
+    <div th:replace="libraries :: csses"></div>
+</head>
+<body class="bg-light">
+<div th:replace="libraries :: navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+
+            <div class="card border-default mt-5">
+                <h5 class="card-header h5 bg-default text-white">Twój plan jazd</h5>
+                <div class="card-body">
+                    <p class="card-title">Plan zawiera historię jazd (kolor czerwony) oraz przyszłe jazdy (zielony). Imię, nazwisko i nr tel. kursanta to link do profilu.</p>
+                    <hr>
+                    <table id="clientsTable" class="table table-striped table-borderless" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="th-sm">Data
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Godziny
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Czas trwania
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Kursant
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Kurs
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:class="${drive.done} ? 'red-text' : 'green-text'" th:each="drive : ${drives}">
+                            <!--<td><b><a th:href="${'../profile/'+client.user.username}" th:text="${client.user.firstname+' '+client.user.lastname}"></a></b></td>-->
+                            <td th:text="${drive.date}"></td>
+                            <td th:text="${drive.start+' - '+drive.stop}"></td>
+                            <td th:text="${drive.duration}"></td>
+                            <td><b><a th:href="${'../profile/'+drive.client.user.username}" th:text="${drive.client.user.firstname+' '+drive.client.user.lastname+' tel.: '+drive.client.user.telephone}"></a></b></td>
+                            <td th:text="${drive.client.category}"></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+
+
+<div th:include="libraries :: scripts"></div>
+<script>
+    $(document).ready(function () {
+        $('.table').DataTable({
+            "language": {
+                "search": "KURRRLAApply filter _INPUT_ to table",
+                "sSearch": "Szukaj:",
+                "sInfo": "Pokazuję _START_ do _END_ z _TOTAL_ pozycji",
+                "sInfoEmpty": "Pokazuję 0 do 0 z 0 pozycji",
+                "sEmptyTable": "Brak danych",
+                "sFirst": "Pierwsza",
+                "sLast": "Ostatnia",
+                "sLengthMenu": "Pokaż _MENU_ pozycji",
+                "sZeroRecords": "Nie znaleziono",
+
+                "paginate": {
+                    "previous": "Poprzednia strona",
+                    "next": "Następna strona"
+                }
+
+            }
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+</body>
+</html>
+

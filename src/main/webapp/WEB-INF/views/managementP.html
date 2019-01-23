@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel kierownika</title>
+    <div th:replace="libraries :: csses"></div>
+</head>
+<body class="bg-light">
+<div th:replace="libraries :: navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5">
+
+            <div class="card border-default mt-5">
+                <h5 class="card-header h5 bg-default text-white">List klientów (kursantów)</h5>
+                <div class="card-body">
+                    <p class="card-title">Tu znajdują się wszyscy kursanci. Z poziomu listy możesz usuwać poszczególnych klientów. Imię i nazwisko to link do podstrony kursanta, która zawiera więcej informacji (takie jak dane, jazdy).</p>
+                    <hr>
+
+                    <table id="clientsTable" class="table table-striped table-borderless" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="th-sm">Imię nazwisko (link)
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Telefon
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Kurs
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Instruktor
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Usuń
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="client : ${clients}">
+                            <td><b><a th:href="${'../profile/'+client.user.username}" th:text="${client.user.firstname+' '+client.user.lastname}"></a></b></td>
+                            <td th:text="${client.user.telephone}"></td>
+                            <td th:text="${client.category}"></td>
+                            <td th:text="${client.instructor.user.firstname+' '+client.instructor.user.lastname}"></td>
+                            <td><form th:action="@{'/management/'+${client.getUser().getId()}}" method="post"> <input type="hidden"
+                                                                                                                      th:name="${_csrf.parameterName}"
+                                                                                                                      th:value="${_csrf.token}" />
+                                <button style="background:none;border:none;padding:0;outline:none;" type="submit">
+                                    <i class="fas fa-user-alt-slash fa-lg red-text"></i>
+                                </button>
+
+                            </form></td>
+                        </tr>
+
+                        </tbody>
+                        <!--<tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                        </tr>
+                        </tfoot>-->
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-5">
+            <div class="card border-default mt-5">
+                <h5 class="card-header h5 bg-default text-white">Lista instruktorów</h5>
+                <div class="card-body">
+                    <p class="card-title ">Tu znajdują się wszyscy instruktorzy. Z poziomu listy możesz usuwać pracowników. Imię i nazwisko to link do podstrony kursanta, która zawiera więcej informacji (takie jak dane, jazdy).</p>
+
+                    <hr>
+
+                    <table id="instructorsTable" class="table table-striped table-borderless" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="th-sm">Imię nazwisko (link)
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Telefon
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Naucza kat.
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">Usuń
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="instructor : ${instructors}">
+                            <td><b><a th:href="${'../profile/'+instructor.user.username}" th:text="${instructor.user.firstname+' '+instructor.user.lastname}"></a></b></td>
+                            <td th:text="${instructor.user.telephone}"></td>
+                            <td th:text="${instructor.categories}"></td>
+                            <td>
+                                <form th:action="@{'/management/'+${instructor.getUser().getId()}}" method="post"> <input type="hidden"
+                                                                                                                          th:name="${_csrf.parameterName}"
+                                                                                                                          th:value="${_csrf.token}" />
+                                    <button style="background:none;border:none;padding:0;outline:none;" type="submit">
+                                        <i class="fas fa-user-alt-slash fa-lg red-text"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                        <!--<tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                        </tr>
+                        </tfoot>-->
+                    </table>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>
+
+
+<div th:include="libraries :: scripts"></div>
+<script>
+    $(document).ready(function () {
+        $('.table').DataTable({
+            "language": {
+                "search": "KURRRLAApply filter _INPUT_ to table",
+                "sSearch": "Szukaj:",
+                "sInfo": "Pokazuję _START_ do _END_ z _TOTAL_ pozycji",
+                "sInfoEmpty": "Pokazuję 0 do 0 z 0 pozycji",
+                "sEmptyTable": "Brak danych",
+                "sFirst": "Pierwsza",
+                "sLast": "Ostatnia",
+                "sLengthMenu": "Pokaż _MENU_ pozycji",
+                "sZeroRecords": "Nie znaleziono",
+
+                "paginate": {
+                    "previous": "Poprzednia strona",
+                    "next": "Następna strona"
+                }
+
+            }
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+</body>
+
+
+</html>

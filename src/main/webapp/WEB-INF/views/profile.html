@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="libraries :: csses"></div>
+    <title>Twój profil</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+<body class="bg-light">
+<div th:replace="libraries :: navbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div class="card border-default mt-5">
+                <h5 class="card-header h5 bg-default text-white">Twój profil</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Zmień swoje dane za pomocą formularza poniżej.</h5>
+                    <hr>
+                    <form th:object="${user}" action="/profile" method="post">
+                        <div class="form-group">
+                            <label for="username">Nazwa użytkownika:</label>
+                            <input th:value="${user.getUsername()}" disabled="disabled" class="form-control" type="text" id="username" name="username"/>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="firstname">Imię:</label>
+                                <input th:value="${user.getFirstname()}" disabled="disabled" class="form-control" type="text" id="firstname" name="firstname"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="lastname">Nazwisko:</label>
+                                <input th:value="${user.getLastname()}" disabled="disabled" class="form-control" type="text" id="lastname" name="lastname"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telephone">Zmień swój numer tel.:</label>
+                            <input th:value="${user.getTelephone()}" class="form-control" type="text" id="telephone" name="telephone"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Zmień swój adres email:</label>
+                            <input th:value="${user.getEmail()}" class="form-control" type="email" id="email" name="email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Zmień swoje hasło (lub pozostaw puste pole by zachować hasło):</label>
+                            <input placeholder="Wpisz nowe hasło" class="form-control" type="password" id="password" name="password"/>
+                        </div>
+
+                        <div sec:authorize="hasRole('ROLE_CLIENT')" class="form-row">
+                            <div class="form-group col-lg-5">
+                                <label for="idinstructor">Twój instruktor:</label>
+                                <input disabled="disabled" class="form-control" type="text" id="idinstructor" th:value="${instructor.user.getFirstname()+' '+instructor.user.getLastname()+' (tel. '+instructor.user.getTelephone()+')' }"/>
+                            </div>
+                            <div class="form-group col-lg-2"></div>
+                            <div class="form-group col-lg-5">
+                                <label for="category">Podjąłeś/aś kurs w kategorii:</label>
+                                <input disabled="disabled" class="form-control" type="text" id="category" th:value="${client.category}"/>
+                            </div>
+                        </div>
+
+
+                        <input type="hidden"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}" />
+                        <hr class="mt-2">
+                        <div class="text-center"><button type="submit" class="btn btn-lg btn-default">Potwierdź zmiany</button></div>
+                    </form>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+</div>
+<div th:include="libraries :: scripts"></div>
+</body>
+</html>

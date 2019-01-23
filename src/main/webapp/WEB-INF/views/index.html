@@ -3,61 +3,43 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="libraries :: csses"></div>
-    <title>Strona</title>
+    <title>Strona główna</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
-
-<body>
+<body class="bg-light">
 <div th:replace="libraries :: navbar"></div>
+<div class="jumbotron text-center stylish-color white-text mx-2 mb-5">
+    <!-- Title -->
+    <i class="fas fa-car-side fa-5x mr-3 white-text "></i>
+    <h1 class="card-title h2 mb-lg-5">Nauka jazdy!</h1>
+    <!-- Subtitle -->
+    <p class="text-left my-4 h6">Jesteśmy firmą zajmującą się szkoleniem z dziedziny prawa jazdy wszystkich kategorii. Z naszą wykwalifikowana kadrą nie będziesz miał żadnych trudności w postawieniu pierwszych kroków jako kierowca.</p>
+    <p class="text-left my-4 h6">Zapraszamy do naszej siedziby na ulicy Piastowskiej 0 we Wrocławiu.</p>
+    <p class="text-left my-4 h6">Aby przejść dalej, zaloguj się.</p>
+
+</div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-1">ąćęłńśóźż</div>
-        <div class="col-lg-10">
-            <table id="usersTable" class="table table-striped table-borderless" cellspacing="0" width="100%">
-                <thead>
-                <tr>
-                    <th class="th-sm">Imię
-                        <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                    </th>
-                    <th class="th-sm">Nazwisko
-                        <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.firstName}">koooooook</td>
-                    <td th:text="${user.lastName}">bob</td>
-                </tr>
-
-                </tbody>
-                <!--<tfoot>
-                <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                </tr>
-                </tfoot>-->
-            </table>
-
-            <div th:include="libraries :: scripts"></div>
-
-            <script>
-                $(document).ready(function () {
-                    $('#usersTable').DataTable({
-                        "language": {
-                            "search": "KURRRLAApply filter _INPUT_ to table",
-                            "sSearch": "SzukKKKKKKKKXDDDDaj:"
-                        }
-                    });
-                    $('.dataTables_length').addClass('bs-select');
-                });
-            </script>
-        </div>
-        <div class="col-lg-1"></div>
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
+        <i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;<i class="fas fa-car-side fa-lg"></i>&nbsp;
     </div>
 </div>
+<div th:include="libraries :: scripts"></div>
 </body>
 </html>

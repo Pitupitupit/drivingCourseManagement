@@ -4457,7 +4457,7 @@
 	{
 		search = regex ?
 			search :
-			_fnEscapeRegex( search );
+			_fnEscapeRegex( search )
 		
 		if ( smart ) {
 			/* For smart filtering we want to allow the search to work regardless of
